@@ -1,12 +1,56 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import PropsType from 'prop-types';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import './index.css'
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+function AddressLabel({ person }) {
+  return (
+    <div>
+      <div>{person.name}</div>
+      <div>{person.address}</div>
+      <div>{person.city} {person.zip}</div>
+    </div>
+  )
+}
+
+AddressLabel.propsType = {
+  person: PropsType.shape({
+    name: PropsType.string,
+    address: PropsType.string,
+    city: PropsType.string,
+    zip: PropsType.zip
+  })
+}
+
+function Envelope({ toPerson, fromPerson }) {
+  return (
+    <article className="envelope">
+      <div className="envelope__top">
+        <AddressLabel person={fromPerson} />
+        <section className="envelope__top-stamp">
+          <span>STAMP</span>
+        </section>
+      </div>
+      <div className="envelope__body">
+        <AddressLabel person={toPerson} />
+      </div>
+    </article>
+  )
+}
+
+const fromPerson = {
+  name: 'Mr. Sender',
+  address: '123 Fake St.',
+  city: 'Boston, MA',
+  zip: '02118'
+}
+
+const toPerson = {
+  name: 'Mr Receiver',
+  address: '123 Fake St.',
+  city: 'San Francisco, CA',
+  zip: '94101'
+}
+
+ReactDOM.render(<Envelope toPerson={toPerson} fromPerson={fromPerson} />, document.querySelector('#root'));
